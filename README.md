@@ -19,7 +19,8 @@ If you forget a concept, find the corresponding file below:
 
 | File Name | Concept | Quick Reminder |
 | :--- | :--- | :--- |
-| [**`01_tensors.py`**](file:///home/shoaib/pytorch/01_tensors.py) | **Tensors** | The "Arrays" of Deep Learning. Multi-dimensional math. |
+| [**`01_tensors.py`**](file:///home/shoaib/pytorch/01_tensors.py) | **Basic Tensors** | The "Arrays" of Deep Learning. Multi-dimensional math. |
+| [**`Day2 pytorch/`**](file:///home/shoaib/pytorch/Day2%20pytorch/tensor_basics.py) | **Tensor Mastery** | Creation, attributes, dtypes, and element-wise math. |
 | [**`02_autograd.py`**](file:///home/shoaib/pytorch/02_autograd.py) | **Autograd** | The magic behind how your model calculates errors (gradients). |
 | [**`03_vision_cnns.py`**](file:///home/shoaib/pytorch/03_vision_cnns.py) | **CNNs** | How computers "see" images using layers that scan pixels. |
 | [**`04_sequences.py`**](file:///home/shoaib/pytorch/04_sequences.py) | **RNNs/LSTMs** | Handling data that has an order (Time, Sentences, Stock prices). |
@@ -88,6 +89,29 @@ When you look at `Deep_Dive_Shopping_Data.py`, remember these stages:
 - **Weights**: Always save just the "brain" using `torch.save(model.state_dict())`. It's lighter and safer!
 
 ---
+
+## 📁 Day 2: Advanced Tensor Mastery
+*Deep diving into the building blocks of Deep Learning.*
+
+### 🛠️ Key Creation & Ops Methods
+| Method | Description | Example |
+| :--- | :--- | :--- |
+| **`torch.empty()`** | Uninitialized tensor (garbage values) | `torch.empty(2,3)` |
+| **`torch.rand()`** | Uniformly distributed random numbers (0 to 1) | `torch.rand(2,2)` |
+| **`torch.manual_seed()`** | Makes random results reproducible | `torch.manual_seed(42)` |
+| **`torch.arange()`** | Range of numbers with step | `torch.arange(0,10,2)` |
+| **`torch.linspace()`** | Evenly spaced numbers in a range | `torch.linspace(0,1,10)` |
+| **`torch.eye()`** | Identity matrix | `torch.eye(3)` |
+| **`torch.full()`** | Fills a shape with a specific value | `torch.full((2,2), 5)` |
+| **`zeros_like()`** | Same shape as input but all zeros | `torch.zeros_like(x)` |
+
+### 🔍 Tensor Attributes & Types
+- **Attributes:** `.shape` (size), `.ndim` (rank), `.dtype` (data type), `.device` (CPU/GPU).
+- **Type Conversion:** Use `.to(torch.float32)`, `.to(torch.int64)`, etc.
+- **Math Ops:** Supports standard `+`, `-`, `*`, `/`, `**` and element-wise operations with `torch.add`, `torch.sub`, `torch.mul`, `torch.div`.
+
+---
+
 
 ## 📦 Environment Setup
 ```bash
