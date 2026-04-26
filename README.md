@@ -166,6 +166,12 @@ This is a comprehensive revision guide containing **every single operation** fou
 | **The `forward` Pass** | `def forward(self, x):` | The "Execution Room". This function defines exactly how data flows from input to output. |
 | **Model Summary** | `summary(model, input_size)` | From `torchinfo`. Shows a clean table of layers, output shapes, and total parameters. |
 | **Parameters** | `model.parameters()` | A list containing all trainable weights and biases in the entire network. |
+| **Safety Check** | `if 'var' in locals():` | **Memory Guard**: Checks if a variable exists in `locals()` dictionary to prevent crashes in Colab if cells are run out of order. |
+| **Features (`X`)** | `X_train` | **The Input**: The data you show the model (e.g., Age, Weight) so it can learn patterns. |
+| **Labels (`y`)** | `y_train` | **The Answer Key**: The ground truth (correct answers) the model tries to match (e.g., 1=Sick, 0=Healthy). |
+| **Optimizers** | `optim.SGD(params, lr)` | **The Engine**: Professional tools that automatically update weights based on calculated gradients. |
+| **`optimizer.step()`** | `optimizer.step()` | **The Update**: The actual command that nudges weights in the right direction to reduce error. |
+| **`zero_grad()`** | `optimizer.zero_grad()` | **Clean Slate**: Clears out old gradients before a new calculation starts so they don't stack up. |
 
 ### ⚖️ The Concept of "Bias" ($b$)
 In Day 5, we moved from $y = xW$ to the full linear equation: **$y = xW + b$**.
