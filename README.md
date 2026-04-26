@@ -150,3 +150,31 @@ This is a comprehensive revision guide containing **every single operation** fou
 | **Weight Update**| `w -= lr * w.grad` | **Improvement**: Nudging weights slightly towards the correct answer. |
 | **Zeroing Grads**| `w.grad.zero_()` | **Reset**: Wiping yesterday's mistakes so we can start fresh in the next round. |
 | **Accuracy** | `(preds == y).float().mean()`| **Final Score**: What percentage of games did the model guess right? |
+
+---
+
+## 📅 Day 5: PyTorch Built-in Modules (`nn` & `optim`)
+*Transitioning from manual math to professional, high-level PyTorch components.*
+
+### 🛠️ The `torch.nn` & `torchinfo` Toolbox
+| Concept / Tool | Code Implementation | Deep Explanation (The "Why") |
+| :--- | :--- | :--- |
+| **`nn.Module`** | `class Model(nn.Module):` | The "Blueprint". Inheriting this gives your class access to all PyTorch training features. |
+| **`nn.Linear`** | `self.linear = nn.Linear(in, out)` | Creates a layer with **Weights** and **Bias** automatically. No more manual `torch.randn`! |
+| **`super().__init__()`** | `super().__init__()` | Mandatory link that initializes the parent `nn.Module` so PyTorch knows this is a model. |
+| **Activation Layers** | `nn.ReLU()`, `nn.Sigmoid()` | Built-in objects for non-linearity. Can be stored as class variables for reuse. |
+| **The `forward` Pass** | `def forward(self, x):` | The "Execution Room". This function defines exactly how data flows from input to output. |
+| **Model Summary** | `summary(model, input_size)` | From `torchinfo`. Shows a clean table of layers, output shapes, and total parameters. |
+| **Parameters** | `model.parameters()` | A list containing all trainable weights and biases in the entire network. |
+
+### ⚖️ The Concept of "Bias" ($b$)
+In Day 5, we moved from $y = xW$ to the full linear equation: **$y = xW + b$**.
+
+**What is Bias?**
+Bias is an extra trainable parameter added to each neuron. It is independent of the input data ($x$).
+
+**Why is it Critical?**
+1. **Flexibility**: Without bias, your model's "line" is forced to pass through the origin (0,0). Bias allows the model to shift the activation function up, down, left, or right.
+2. **The "Offset"**: Even if all inputs are zero ($x=0$), the neuron can still output a value ($b$), allowing the network to represent more complex patterns.
+3. **Analogy**: If Weights ($W$) are the "Importance" of features, Bias ($b$) is the "Threshold" or "Starting Point" required to trigger the neuron.
+
