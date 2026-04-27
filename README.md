@@ -156,31 +156,86 @@ This is a comprehensive revision guide containing **every single operation** fou
 ## 📅 Day 5: PyTorch Built-in Modules (`nn` & `optim`)
 *Transitioning from manual math to professional, high-level PyTorch components.*
 
-### 🛠️ The `torch.nn` & `torchinfo` Toolbox
+### 🛠️ Part A: The `torch.nn` & `torchinfo` Toolbox
 | Concept / Tool | Code Implementation | Deep Explanation (The "Why") |
 | :--- | :--- | :--- |
-| **`nn.Module`** | `class Model(nn.Module):` | The "Blueprint". Inheriting this gives your class access to all PyTorch training features. |
-| **`nn.Linear`** | `self.linear = nn.Linear(in, out)` | Creates a layer with **Weights** and **Bias** automatically. No more manual `torch.randn`! |
-| **`super().__init__()`** | `super().__init__()` | Mandatory link that initializes the parent `nn.Module` so PyTorch knows this is a model. |
-| **Activation Layers** | `nn.ReLU()`, `nn.Sigmoid()` | Built-in objects for non-linearity. Can be stored as class variables for reuse. |
-| **The `forward` Pass** | `def forward(self, x):` | The "Execution Room". This function defines exactly how data flows from input to output. |
-| **Model Summary** | `summary(model, input_size)` | From `torchinfo`. Shows a clean table of layers, output shapes, and total parameters. |
-| **Parameters** | `model.parameters()` | A list containing all trainable weights and biases in the entire network. |
-| **Safety Check** | `if 'var' in locals():` | **Memory Guard**: Checks if a variable exists in `locals()` dictionary to prevent crashes in Colab if cells are run out of order. |
-| **Features (`X`)** | `X_train` | **The Input**: The data you show the model (e.g., Age, Weight) so it can learn patterns. |
-| **Labels (`y`)** | `y_train` | **The Answer Key**: The ground truth (correct answers) the model tries to match (e.g., 1=Sick, 0=Healthy). |
-| **Optimizers** | `optim.SGD(params, lr)` | **The Engine**: Professional tools that automatically update weights based on calculated gradients. |
+| **`nn.Module`** | `class Model(nn.Module):` | **The Blueprint**: Inheriting this gives your class access to all PyTorch training features. |
+| **`nn.Linear`** | `self.linear = nn.Linear(in, out)` | **The Layer**: Creates a layer with **Weights** and **Bias** automatically. |
+| **`super().__init__()`** | `super().__init__()` | **The Link**: Mandatory link that initializes the parent `nn.Module` so PyTorch knows this is a model. |
+| **Activation Layers** | `nn.ReLU()`, `nn.Sigmoid()` | **The Logic**: Built-in objects for non-linearity. Can be stored as class variables for reuse. |
+| **The `forward` Pass** | `def forward(self, x):` | **The Execution**: This function defines exactly how data flows from input to output. |
+| **Model Summary** | `summary(model, input_size)` | **The Auditor**: From `torchinfo`. Shows layers, output shapes, and total parameters. |
+| **Parameters** | `model.parameters()` | **The Brain**: A list containing all trainable weights and biases in the entire network. |
+| **Safety Check** | `if 'var' in locals():` | **Memory Guard**: Checks if a variable exists in `locals()` dictionary to prevent crashes in Colab. |
+| **Features (`X`)** | `X_train` | **The Input**: The data you show the model (e.g., Age, Weight) to learn patterns. |
+| **Labels (`y`)** | `y_train` | **The Answer Key**: The ground truth (correct answers) the model tries to match. |
+| **Optimizers** | `optim.SGD(params, lr)` | **The Engine**: Professional tools that automatically update weights based on gradients. |
 | **`optimizer.step()`** | `optimizer.step()` | **The Update**: The actual command that nudges weights in the right direction to reduce error. |
-| **`zero_grad()`** | `optimizer.zero_grad()` | **Clean Slate**: Clears out old gradients before a new calculation starts so they don't stack up. |
+| **`zero_grad()`** | `optimizer.zero_grad()` | **Clean Slate**: Clears out old gradients before a new calculation starts. |
 
-### ⚖️ The Concept of "Bias" ($b$)
-In Day 5, we moved from $y = xW$ to the full linear equation: **$y = xW + b$**.
+### ⚖️ Part B: The Concept of "Bias" ($b$)
+| Metric | Detail | Detailed Explanation |
+| :--- | :--- | :--- |
+| **Definition** | Trainable parameter | An extra value added to the output of a neuron, independent of the input data ($x$). |
+| **The Formula** | $y = xW + b$ | The complete linear equation for a neuron. |
+| **Flexibility** | Shifting | Allows the model to move the "line" up, down, left, or right (not stuck at 0,0). |
+| **The Offset** | Zero-input output | Even if $x=0$, the neuron can still output a value ($b$) to represent patterns. |
+| **Analogy** | The Threshold | If $W$ is the "Importance" of features, $b$ is the "Starting Point" required to trigger the neuron. |
 
-**What is Bias?**
-Bias is an extra trainable parameter added to each neuron. It is independent of the input data ($x$).
+---
 
-**Why is it Critical?**
-1. **Flexibility**: Without bias, your model's "line" is forced to pass through the origin (0,0). Bias allows the model to shift the activation function up, down, left, or right.
-2. **The "Offset"**: Even if all inputs are zero ($x=0$), the neuron can still output a value ($b$), allowing the network to represent more complex patterns.
-3. **Analogy**: If Weights ($W$) are the "Importance" of features, Bias ($b$) is the "Threshold" or "Starting Point" required to trigger the neuron.
+## 📅 Day 6: Datasets & DataLoaders (Detailed Reference)
+*The professional way to feed data into models efficiently.*
 
+### 🛠️ 1. Why we use Classes? (Manual Loading vs. PyTorch)
+| Headache | Manual Feeding Issue | PyTorch Class Solution |
+| :--- | :--- | :--- |
+| **Interface** | No standard way to fetch data. | **`Dataset` Class**: Provides a consistent `__getitem__` interface. |
+| **Preprocessing** | Hard to apply transforms on the fly. | **Transform Pipeline**: Supports automated cleaning/editing during loading. |
+| **Order** | Risk of model memorizing patterns. | **Shuffling**: Automated randomization of indices every epoch. |
+| **Performance** | CPU waits for GPU (Bottleneck). | **Parallelization**: `num_workers` load next batches in background. |
+
+### 📦 2. Core Class Responsibilities
+| Class | Role / Analogy | Key Responsibility |
+| :--- | :--- | :--- |
+| **`Dataset`** | **The Organized Storage** | Knowing how to fetch and prepare **one** individual item at a time. |
+| **`DataLoader`**| **The Delivery Service** | Bundling items into **batches**, shuffling, and feeding them to the model. |
+
+### 🧬 3. The Custom `Dataset` Blueprint
+| Function | Implementation | Deep Explanation |
+| :--- | :--- | :--- |
+| **`__init__`** | `self.data = data` | **The Setup**: Where you read CSVs or store your tensors in memory initially. |
+| **`__len__`** | `return len(self.data)` | **The Boundary**: Tells the loader the total count to avoid "Index Out of Range". |
+| **`__getitem__`**| `return x, y` | **The Extractor**: Logic to fetch 1 sample and its label at a specific `index`. |
+
+### ⚡ 4. Mini-Batch Training Strategies
+| Strategy | Implementation | Advantage / Disadvantage |
+| :--- | :--- | :--- |
+| **Batch GD** | All data at once. | Stable but extremely slow and crashes computer memory (RAM). |
+| **Stochastic GD**| 1 row at a time. | Fast but very "noisy" and the loss fluctuates wildly. |
+| **Mini-Batch GD**| 32-64 samples. | **The Goldilocks**: High speed, stable learning, and memory efficient. |
+
+### 🔄 5. The DataLoader Internal Workflow
+| Step | Process | Responsibility |
+| :--- | :--- | :--- |
+| **1. Sampler** | Index Strategy | Decides which indices to pick (e.g., Random vs Sequential). |
+| **2. Dispatch** | Worker Allocation | Sends index lists to multiple CPU Workers for background loading. |
+| **3. Fetch** | `__getitem__` Call | Workers pull data from your Dataset for each index in the batch. |
+| **4. Collate** | The "Glue" | Combines separate items into a single Batch Tensor. |
+| **5. Yield** | training loop | The final batch is sent to the main process for model training. |
+
+### 🎯 6. Sampler & Collate (The Hidden Helpers)
+| Helper | Variant | Purpose |
+| :--- | :--- | :--- |
+| **Sampler** | **Sequential** | Fetches data in order (0, 1, 2...). Best for Evaluation/Testing. |
+| **Sampler** | **Random** | Fetches data randomly. Best for Training. |
+| **Collate** | `collate_fn` | Custom glue for variable-length data (like different sentence lengths). |
+
+### ⚙️ 7. Full DataLoader Parameters Reference
+| Parameter | Default | Deep Impact (The "Why") |
+| :--- | :--- | :--- |
+| **`batch_size`** | `1` | Affects training speed and the "smoothness" of gradient updates. |
+| **`shuffle`** | `False` | Mixes data to ensure the model doesn't memorize the sequence. |
+| **`num_workers`** | `0` | Uses multiple CPU cores to load next batches while the GPU trains. |
+| **`pin_memory`** | `False` | Moves data to "locked" RAM for faster transfer to the GPU. |
+| **`drop_last`** | `False` | Drops the final batch if it's smaller than the batch size. |
