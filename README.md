@@ -239,3 +239,48 @@ This is a comprehensive revision guide containing **every single operation** fou
 | **`num_workers`** | `0` | Uses multiple CPU cores to load next batches while the GPU trains. |
 | **`pin_memory`** | `False` | Moves data to "locked" RAM for faster transfer to the GPU. |
 | **`drop_last`** | `False` | Drops the final batch if it's smaller than the batch size. |
+
+---
+
+## 📅 Day 7: Building an Artificial Neural Network (ANN)
+*A complete workflow of building, training, and evaluating a neural network using PyTorch.*
+
+### 🚀 Part A: Data Preparation & Preprocessing
+| Concept / Tool | Code Implementation | Detailed Explanation (The "Why") |
+| :--- | :--- | :--- |
+| **Dataset Loading** | `pd.read_csv('fmnist_small.csv')` | Loading the dataset (Fashion MNIST) into a Pandas DataFrame. |
+| **Train-Test Split** | `train_test_split(X, y, test_size=0.2)` | Dividing data to keep 20% unseen for testing the model's actual performance. |
+| **Data Scaling** | `X_train / 255.0` | Normalizing pixel values (0-255) to a 0-1 range for faster and more stable model training. |
+| **Custom Dataset** | `class CustomDataset(Dataset):` | Building a custom Dataset class to properly manage features and labels in PyTorch. |
+| **Type Conversion** | `torch.tensor(..., dtype=torch.long)` | Labels must be converted to `torch.long` (integers) for classification loss functions like CrossEntropy. |
+| **DataLoader** | `DataLoader(..., batch_size=32, shuffle=True)` | Creating DataLoaders for both training (`shuffle=True`) and testing (`shuffle=False` as order doesn't matter for evaluation). |
+
+### 🧠 Part B: Model Architecture & Training Setup
+| Concept / Tool | Code Implementation | Detailed Explanation (The "Why") |
+| :--- | :--- | :--- |
+| **Model Blueprint** | `class MyNN(nn.Module):` | Inheriting from `nn.Module` to create the Neural Network structure. |
+| **`nn.Sequential`** | `self.model = nn.Sequential(...)` | A clean container that automatically passes data sequentially through all the listed layers. |
+| **Linear Layer** | `nn.Linear(in_features, out_features)` | A fully connected layer that transforms input dimensions into output dimensions. |
+| **Softmax** | `nn.Softmax(dim=1)` | Converts the raw output of the final layer into readable probabilities (summing to 1). |
+| **CrossEntropy Loss** | `nn.CrossEntropyLoss()` | The standard loss function used for Multi-Class Classification tasks. |
+| **Epoch** | `for epoch in range(epochs):` | **Concept:** One Epoch is when the model sees the entire training dataset exactly once. |
+
+### 🔄 Part C: The Training Loop (Step-by-Step)
+| Step | Code Implementation | Detailed Explanation (The "Why") |
+| :--- | :--- | :--- |
+| **1. Forward Pass** | `outputs = model(batch_features)` | The model makes its best guess based on the current input batch. |
+| **2. Calculate Loss** | `loss = criterion(outputs, batch_labels)` | Compares the model's guesses to the actual answers to measure the error. |
+| **3. Clear Gradients** | `optimizer.zero_grad()` | Wipes the gradients from the previous batch to prevent them from piling up. |
+| **4. Backward Pass** | `loss.backward()` | Calculates how much each weight contributed to the error (Backpropagation). |
+| **5. Update Weights** | `optimizer.step()` | Adjusts the weights slightly to reduce the error for the next time. |
+| **6. Track Loss** | `loss.item()` | Extracts the pure scalar number from the PyTorch loss tensor to track training progress. |
+
+### 📊 Part D: Model Evaluation & Inference
+| Concept / Tool | Code Implementation | Detailed Explanation (The "Why") |
+| :--- | :--- | :--- |
+| **Evaluation Mode** | `model.eval()` | Switches the model from Training Mode to Evaluation Mode. It deactivates Dropout and stops Batch Normalization updates. |
+| **Disable Gradients**| `with torch.no_grad():` | Tells PyTorch to stop tracking operations for gradients, which saves memory and speeds up testing. |
+| **Class Prediction** | `_, predicted = torch.max(outputs, 1)` | Finds the index of the highest probability in the output, which corresponds to the predicted class label. |
+| **Accuracy Calculation**| `correct += (predicted == batch_labels).sum().item()`| Counts exactly how many predictions matched the ground truth in the current batch. |
+| **Final Accuracy** | `100 * correct / total` | The percentage of completely correct predictions over the entire test dataset. |
+| **Improve Accuracy** | GPU, Full Dataset, LR, Optimizer | Tweaks like using more data, changing the learning rate, or using a GPU can boost accuracy. |
