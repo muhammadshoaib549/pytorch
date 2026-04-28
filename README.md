@@ -284,3 +284,14 @@ This is a comprehensive revision guide containing **every single operation** fou
 | **Accuracy Calculation**| `correct += (predicted == batch_labels).sum().item()`| Counts exactly how many predictions matched the ground truth in the current batch. |
 | **Final Accuracy** | `100 * correct / total` | The percentage of completely correct predictions over the entire test dataset. |
 | **Improve Accuracy** | GPU, Full Dataset, LR, Optimizer | Tweaks like using more data, changing the learning rate, or using a GPU can boost accuracy. |
+
+---
+
+## 📅 Day 8: Deep Learning with GPU Acceleration
+*Introduction to leveraging GPU (CUDA) for training models on larger datasets.*
+
+| Concept / Motivation | Detail / Code Concept | Detailed Explanation (The "Why") |
+| :--- | :--- | :--- |
+| **The Need for GPU** | **Handling Higher Data Sets** | As datasets become much larger, the computational load of matrix multiplications becomes too massive for a standard CPU, leading to extremely slow training times. |
+| **GPU vs CPU** | **Parallel Compute Power** | A CPU processes tasks with a few powerful cores, whereas a GPU (Graphics Processing Unit) has thousands of cores built specifically to execute mathematical operations in parallel, providing massive speedups. |
+| **The Implementation Goal** | **Moving to CUDA** | To train efficiently, the upcoming code will need to move both the Data (Tensors) and the Neural Network Model from the computer's standard RAM to the GPU's dedicated VRAM. |
